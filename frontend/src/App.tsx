@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 function App() {
-  const [price, setPrice] = useState(null);
+  const [price, setPrice] = useState<number>();
+  const [walletBalance, setWalletBalance] = useState<number>();
+  const X_API_KEY = import.meta.env.VITE_X_API_KEY as string;
 
   const getPrice = () => {
     axios
@@ -13,9 +15,27 @@ function App() {
       .catch((err) => console.error(err));
   };
 
+  const getWalletBalance = () => {
+    const headers = {
+      "X-Api-Key": X_API_KEY,
+    };
+
+    axios
+      .get("https://legend.lnbits.com/api/v1/wallet", { headers })
+      .then((response) => {
+        setWalletBalance((response.data.balance as number) / 1000);
+      });
+  };
+
+  useEffect(() => {
+    getPrice();
+    getWalletBalance();
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
       getPrice();
+      getWalletBalance();
     }, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -28,7 +48,7 @@ function App() {
       <div className="w-full flex justify-between sm:flex-col">
         <div className="bg-yellow-500 border-solid border-2 border-purple-500 rounded p-2 w-1/4 mt-4 mb-2 ml-2 md:w-full md:text-center md:mx-[2%] sm:w-4/5 sm:my-0 sm:mx-auto sm:mt-[1%]">
           <h2>Balance</h2>
-          <p className="text-xl font-bold">balance sats</p>
+          <p className="text-xl font-bold">{walletBalance} sats</p>
         </div>
         <div className="bg-yellow-500 border-solid border-2 border-purple-500 rounded p-2 w-1/4 mt-4 mb-2 mr-2 md:w-full md:text-center md:mx-[2%] sm:w-4/5 sm:my-0 sm:mx-auto sm:mt-[1%]">
           <h2>Price</h2>
