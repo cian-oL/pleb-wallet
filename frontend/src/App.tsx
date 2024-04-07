@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+import Transactions from "./components/Transactions";
+
 function App() {
   const [price, setPrice] = useState<number>();
   const [walletBalance, setWalletBalance] = useState<number>();
@@ -56,7 +58,9 @@ function App() {
         </div>
       </div>
       <div className="w-full flex justify-between sm:flex-col">
-        <div className="bg-slate-50 border-solid border-2 border-purple-500 rounded h-72 w-2/5 overflow-scroll ml-2 md:w-full md:h-48 sm:mt-[1%]"></div>
+        <div className="bg-slate-50 border-solid border-2 border-purple-500 rounded h-72 w-2/5 overflow-scroll ml-2 md:w-full md:h-48 sm:mt-[1%]">
+          <Transactions />
+        </div>
         <div className="bg-slate-50 border-solid border-2 border-purple-500 rounded h-72 w-2/5 overflow-scroll mr-2 md:w-full md:h-48 sm:mt-[1%]"></div>
       </div>
       <footer className="bg-slate-800 border-solid border-2 border-slate-800 border-t-yellow-500 p-2 text-center fixed bottom-0 w-full ">
